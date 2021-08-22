@@ -1,0 +1,8 @@
+
+.mybody{
+	margin: 120rpx 20rpx 0 20rpx;
+}
+.mycontent{
+	width: 100%;
+}
+

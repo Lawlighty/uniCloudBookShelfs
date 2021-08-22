@@ -1,0 +1,6 @@
+{
+	"dependencies": {
+		"doubanbook": "^1.0.1",
+		"wx-common": "file:..\\common\\wx-common"
+	}
+}

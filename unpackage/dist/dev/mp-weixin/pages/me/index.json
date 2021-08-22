@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "uni-app",
+  "usingComponents": {
+    "book-shelf-item": "/pages/book-shelf-item/book-shelf-item"
+  }
+}

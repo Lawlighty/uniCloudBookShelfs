@@ -1,0 +1,41 @@
+{
+  "pages": [
+    "pages/me/index",
+    "pages/books/books",
+    "pages/map/map",
+    "pages/createbookshelf/createbookshelf",
+    "pages/book-shelf-item/book-shelf-item",
+    "pages/book-shelf/book-shelf"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationStyle": "custom",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "list": [
+      {
+        "iconPath": "static/tabIcons/me.png",
+        "selectedIconPath": "static/tabIcons/me_selected.png",
+        "pagePath": "pages/me/index",
+        "text": "我的书架"
+      },
+      {
+        "iconPath": "static/tabIcons/books.png",
+        "selectedIconPath": "static/tabIcons/books_selected.png",
+        "pagePath": "pages/books/books",
+        "text": "搜书"
+      },
+      {
+        "iconPath": "static/tabIcons/map.png",
+        "selectedIconPath": "static/tabIcons/map_selected.png",
+        "pagePath": "pages/map/map",
+        "text": "附近"
+      }
+    ]
+  },
+  "usingComponents": {}
+}

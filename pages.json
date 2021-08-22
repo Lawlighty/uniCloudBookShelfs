@@ -1,0 +1,87 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/me/index",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		}
+	    ,{
+            "path" : "pages/books/books",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/map/map",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/createbookshelf/createbookshelf",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/book-shelf-item/book-shelf-item",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/book-shelf/book-shelf",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
+	"tabBar":{
+		"list":[
+			{
+				"iconPath":"static/tabIcons/me.png",
+				"selectedIconPath":"static/tabIcons/me_selected.png",
+				"pagePath":"pages/me/index",
+				"text":"我的书架"
+			},
+			{
+				"iconPath":"static/tabIcons/books.png",
+				"selectedIconPath":"static/tabIcons/books_selected.png",
+				"pagePath":"pages/books/books",
+				"text":"搜书"
+			},
+			{
+				"iconPath":"static/tabIcons/map.png",
+				"selectedIconPath":"static/tabIcons/map_selected.png",
+				"pagePath":"pages/map/map",
+				"text":"附近"
+			}
+		]
+	},
+	"globalStyle": {
+		"navigationStyle":"custom", // 不使用小程序自带导航
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"easycom": {
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+	}
+}
