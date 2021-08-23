@@ -51,6 +51,19 @@ exports.main = async (event, context) => {
 		.limit(10)
 		.get();
 		
+		// 聚合查询 除去重复数据
+		// const $ = db.command.aggregate;
+		// dbRes = await db.collection('books').aggregate().group({
+		// 	'_id': '$isbnId', // 书籍相同
+		// 	'isbnId': $.last('$isbnId'),
+		// 	'title': $.last('$title'),
+		// 	'cover_url': $.last('$cover_url'),
+		// })
+		// .sort({
+		// 	'_id': -1,
+		// })
+		// .end();
+		
 		// 除去 图书的owner
 		// delete
 		

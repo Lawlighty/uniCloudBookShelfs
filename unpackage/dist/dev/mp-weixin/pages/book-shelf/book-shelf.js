@@ -109,6 +109,12 @@ try {
     },
     uniFab: function() {
       return __webpack_require__.e(/*! import() | uni_modules/uni-fab/components/uni-fab/uni-fab */ "uni_modules/uni-fab/components/uni-fab/uni-fab").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-fab/components/uni-fab/uni-fab.vue */ 171))
+    },
+    uPopup: function() {
+      return __webpack_require__.e(/*! import() | node-modules/uview-ui/components/u-popup/u-popup */ "node-modules/uview-ui/components/u-popup/u-popup").then(__webpack_require__.bind(null, /*! uview-ui/components/u-popup/u-popup.vue */ 241))
+    },
+    uButton: function() {
+      return __webpack_require__.e(/*! import() | node-modules/uview-ui/components/u-button/u-button */ "node-modules/uview-ui/components/u-button/u-button").then(__webpack_require__.bind(null, /*! uview-ui/components/u-button/u-button.vue */ 234))
     }
   }
 } catch (e) {
@@ -165,7 +171,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 19));
 
 
 
@@ -194,35 +200,56 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _cloudApi = _interopRequireDefault(__webpack_require__(/*! ../../common/cloudApi.js */ 46));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default = { data: function data() {return { shelfId: null, shelfInfo: {}, content: [{ iconPath: '/static/fabIcons/books.png', selectedIconPath: '/static/fabIcons/books.png', text: '添加图书', active: true }], booksList: [] };}, onLoad: function onLoad(options) {this.shelfId = options.id;this.getShelfInfo();this.requestBookList();}, methods: { goBack: function goBack() {uni.navigateBack({});}, getShelfInfo: function getShelfInfo() {var _this = this;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _cloudApi = _interopRequireDefault(__webpack_require__(/*! ../../common/cloudApi.js */ 46));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var _default =
+{
+  data: function data() {
+    return {
+      shelfId: null,
+      shelfInfo: {},
+      content: [
+      {
+        iconPath: '/static/fabIcons/books.png',
+        selectedIconPath: '/static/fabIcons/books.png',
+        text: '添加图书',
+        active: false },
+
+      {
+        iconPath: '/static/fabIcons/share.png',
+        selectedIconPath: '/static/fabIcons/share.png',
+        text: '分享书架',
+        active: false }],
+
+
+      booksList: [],
+      show: false };
+
+  },
+  onLoad: function onLoad(options) {
+    this.shelfId = options.id;
+    this.getShelfInfo();
+    this.requestBookList();
+  },
+  methods: {
+    goBack: function goBack() {
+      uni.navigateBack({});
+
+
+    },
+    getShelfInfo: function getShelfInfo() {var _this = this;
       _cloudApi.default.call({
         name: 'bookshelfs',
         data: {
@@ -240,6 +267,9 @@ var _default = { data: function data() {return { shelfId: null, shelfInfo: {}, c
       switch (index) {
         case 0:
           this.btnScan();
+          break;
+        case 1:
+          this.show = true;
           break;
         default:
           console.log('aaa');}
@@ -286,6 +316,102 @@ var _default = { data: function data() {return { shelfId: null, shelfInfo: {}, c
         success: function success(res) {
           _this3.booksList = res.result;
         } });
+
+    },
+    // 生成 小程序码
+    toShare: function toShare(e) {
+      console.log('生成 小程序码 e', e);
+      if (e === 0) {
+        console.log('生成 小程序码0');
+      } else if (e === 1) {
+        console.log('生成 小程序码1');
+        this.drawPoster();
+      }
+    },
+    drawPoster: function drawPoster() {var _this4 = this;
+      uni.showLoading({
+        mask: true });
+
+
+      var query = wx.createSelectorQuery();
+      query.select('#myPoster').
+      fields({ node: true, size: true }).
+      exec( /*#__PURE__*/function () {var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(
+        function _callee(res) {var canvas, ctx, dpr, image, bookLength, bookIndex, loadNextBook;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+                  canvas = res[0].node;
+                  ctx = canvas.getContext('2d');
+
+                  dpr = uni.getSystemInfoSync().pixelRatio || 1;
+                  canvas.width = res[0].width * dpr;
+                  canvas.height = res[0].height * dpr;
+                  ctx.scale(dpr, dpr);
+
+                  ctx.fillStyle = '#ffffff';
+                  ctx.fillRect(0, 0, 350, 750);
+
+                  ctx.fillStyle = '#000000';
+                  ctx.fontSize = 16;
+                  ctx.fillText(_this4.shelfInfo.name, 70, 25);
+                  ctx.fontSize = 12;
+                  ctx.fillText(_this4.shelfInfo.ownerInfo.nickName, 70, 44);
+                  ctx.fontSize = 12;
+                  ctx.fillText(_this4.shelfInfo.address, 70, 60);
+
+                  image = canvas.createImage();
+                  image.onload = function (res) {
+                    ctx.drawImage(image, 10, 15, 50, 50);
+
+                  };
+                  image.src = _this4.shelfInfo.ownerInfo.avatarUrl;
+
+                  // books
+                  bookLength = Math.min(9, _this4.booksList.length);
+                  bookIndex = 0;
+
+                  loadNextBook = function loadNextBook() {
+                    console.log('loadNextBook');
+                    var bookItem = _this4.booksList[bookIndex];
+                    console.log('bookItem', bookItem);
+                    uni.getImageInfo({
+                      src: bookItem.cover_url,
+                      success: function success(res) {
+                        console.log('getImageInfo', res);
+                        var image = canvas.createImage();
+
+                        image.onload = function () {
+                          console.log('image.onload');
+                          var dx = Math.floor(bookIndex % 3) * (100 + 15) + 10;
+                          var dy = Math.floor(bookIndex / 3) * (150 + 15) + 80;
+
+                          ctx.drawImage(image, dx, dy, 100, 150);
+
+                          if (bookIndex < bookLength - 1) {
+                            console.log('下一个');
+                            bookIndex++;
+                            loadNextBook();
+                          } else {
+                            console.log('啊啊啊啊');
+                            uni.canvasToTempFilePath({
+                              canvas: canvas,
+                              success: function success(res) {
+                                //  预览
+                                uni.previewImage({
+                                  current: res.tempFilePath,
+                                  urls: [res.tempFilePath] });
+
+                              } });
+
+                            uni.hideLoading();
+                          }
+                        };
+                        image.src = res.path;
+                      } });
+
+                  };
+
+                  loadNextBook();case 22:case "end":return _context.stop();}}}, _callee);}));return function (_x) {return _ref.apply(this, arguments);};}());
+
+
 
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

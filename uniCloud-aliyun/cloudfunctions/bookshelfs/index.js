@@ -63,7 +63,7 @@ exports.main = async (event, context) => {
 		})
 		.get();
 		
-		dbRes.data[0]['ownerInfo'] = ownerInfo;
+		dbRes.data[0]['ownerInfo'] = ownerInfo.data[0];
 	} else if (action === 'listByGeo'){
 		// 查询相应位置的书架信息
 		dbRes = await db.collection("bookshelfs").where({

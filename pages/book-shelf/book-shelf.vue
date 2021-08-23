@@ -21,6 +21,20 @@
 				@trigger="trigger"
 			></uni-fab>
 		</view>
+		<view>
+			<u-popup v-model="show" mode="bottom">
+				<view>
+					<u-button open-type="share" @click="toShare(0)">分享给好友</u-button>
+					<u-button open-type="share" @click="toShare(1)">分享到朋友圈</u-button>
+					<!-- <u-cell-group>
+						<u-cell-item icon="setting-fill" title="分享给好友"></u-cell-item>
+						<u-cell-item icon="integral-fill" title="分享到朋友圈" :arrow="false"></u-cell-item>
+					</u-cell-group> -->
+				</view>
+			</u-popup>
+			<!-- <u-action-sheet :list="list" v-model="show" @click="toShare"></u-action-sheet> -->
+		</view>
+		<canvas id="myPoster" type="2d" style="position: fixed;left: -350px; height: 750px;width: 350px;"></canvas>
 	</view>
 	
 	
@@ -38,10 +52,17 @@
 						iconPath:'/static/fabIcons/books.png',
 						selectedIconPath:'/static/fabIcons/books.png',
 						text:'添加图书',
-						active: true,
-					}
+						active: false,
+					},
+					{
+						iconPath:'/static/fabIcons/share.png',
+						selectedIconPath:'/static/fabIcons/share.png',
+						text:'分享书架',
+						active: false,
+					},
 				],
 				booksList: [],
+				show: false
 			}
 		},
 		onLoad(options){
@@ -73,6 +94,9 @@
 				switch (index){
 					case 0:
 						this.btnScan();
+						break;
+					case 1:
+						this.show = true;
 						break;
 					default:
 						console.log('aaa')
@@ -120,6 +144,102 @@
 						this.booksList = res.result;
 					}
 				})
+			},
+			// 生成 小程序码
+			toShare(e){
+				console.log('生成 小程序码 e',e)
+				if (e===0){
+					console.log('生成 小程序码0')
+				} else if (e===1){
+					console.log('生成 小程序码1')
+					this.drawPoster();
+				}
+			},
+			drawPoster(){
+				uni.showLoading({
+					mask: true,
+				});
+				
+				const query = wx.createSelectorQuery();
+				query.select('#myPoster')
+				.fields({node: true, size: true})
+				.exec(
+					async (res)=>{
+						let canvas = res[0].node;
+						let ctx = canvas.getContext('2d');
+
+						const dpr = uni.getSystemInfoSync().pixelRatio||1;
+						canvas.width = res[0].width * dpr;
+						canvas.height = res[0].height * dpr;
+						ctx.scale(dpr, dpr);
+
+						ctx.fillStyle = '#ffffff';
+						ctx.fillRect(0,0,350,750);
+						
+						ctx.fillStyle = '#000000';
+						ctx.fontSize = 16;
+						ctx.fillText(this.shelfInfo.name,70,25);
+						ctx.fontSize = 12;
+						ctx.fillText(this.shelfInfo.ownerInfo.nickName,70,44);
+						ctx.fontSize = 12;
+						ctx.fillText(this.shelfInfo.address,70,60);
+						
+						let image = canvas.createImage();
+						image.onload = (res) =>{
+							ctx.drawImage(image, 10, 15, 50, 50);
+							
+						};
+						image.src = this.shelfInfo.ownerInfo.avatarUrl;
+						
+						// books
+						let bookLength = Math.min(9, this.booksList.length);
+						let bookIndex = 0;
+						
+						let loadNextBook = ()=>{
+							console.log('loadNextBook')
+							let bookItem = this.booksList[bookIndex];
+							console.log('bookItem',bookItem)
+							uni.getImageInfo({
+								src: bookItem.cover_url,
+								success: (res) => {
+									console.log('getImageInfo',res)
+									let image = canvas.createImage();
+									
+									image.onload = ()=>{
+										console.log('image.onload')
+										let dx = Math.floor(bookIndex % 3) * (100 + 15) + 10;
+										let dy = Math.floor(bookIndex / 3) * (150 + 15) + 80;
+										
+										ctx.drawImage(image, dx, dy, 100, 150);
+										
+										if(bookIndex < bookLength - 1){
+											console.log('下一个')
+											bookIndex++;
+											loadNextBook();
+										} else {
+											console.log('啊啊啊啊')
+											uni.canvasToTempFilePath({
+												canvas: canvas,
+												success: (res) => {
+													//  预览
+													uni.previewImage({
+														current: res.tempFilePath,
+														urls: [res.tempFilePath]
+													})
+												}
+											})
+											uni.hideLoading();
+										}
+									};
+									image.src = res.path;
+								}
+							})
+						};
+						
+						loadNextBook();
+						
+					}
+				)
 			}
 		}
 	}
