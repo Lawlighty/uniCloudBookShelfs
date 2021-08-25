@@ -25,10 +25,10 @@
 			<u-popup v-model="show" mode="bottom">
 				<view>
 					<u-button open-type="share" @click="toShare(0)">分享给好友</u-button>
-					<u-button open-type="share" @click="toShare(1)">分享到朋友圈</u-button>
-					<!-- <u-cell-group>
-						<u-cell-item icon="setting-fill" title="分享给好友"></u-cell-item>
-						<u-cell-item icon="integral-fill" title="分享到朋友圈" :arrow="false"></u-cell-item>
+					<u-button open-type="share"  @click="toShare(1)">分享到朋友圈</u-button>
+			<!-- 		<u-cell-group>
+						<u-cell-item icon="setting-fill" title="分享给好友"  @click="toShare(1)"></u-cell-item>
+						<u-cell-item icon="integral-fill" title="分享到朋友圈" :arrow="false" @click="toShare(1)" ></u-cell-item>
 					</u-cell-group> -->
 				</view>
 			</u-popup>
@@ -196,28 +196,22 @@
 						let bookIndex = 0;
 						
 						let loadNextBook = ()=>{
-							console.log('loadNextBook')
 							let bookItem = this.booksList[bookIndex];
-							console.log('bookItem',bookItem)
 							uni.getImageInfo({
 								src: bookItem.cover_url,
 								success: (res) => {
-									console.log('getImageInfo',res)
 									let image = canvas.createImage();
 									
 									image.onload = ()=>{
-										console.log('image.onload')
 										let dx = Math.floor(bookIndex % 3) * (100 + 15) + 10;
 										let dy = Math.floor(bookIndex / 3) * (150 + 15) + 80;
 										
 										ctx.drawImage(image, dx, dy, 100, 150);
 										
 										if(bookIndex < bookLength - 1){
-											console.log('下一个')
 											bookIndex++;
 											loadNextBook();
 										} else {
-											console.log('啊啊啊啊')
 											uni.canvasToTempFilePath({
 												canvas: canvas,
 												success: (res) => {
@@ -235,8 +229,104 @@
 								}
 							})
 						};
-						
 						loadNextBook();
+						return 
+						// 加入小程序码
+						// const wxcodeRes = await cloudApi.call({
+						// 	name: 'getwxacode',
+						// 	data:{
+						// 		scene: 'sid='+this.shelfInfo._id,
+						// 		// page: //不传默认主页面
+						// 	}
+						// })
+						
+						// let timestamp = new Date().getTime();
+						// const fsm = wx.getFileSystemManager();
+						// const FILE_BASE_NAME = 'tmp_img_src' + timestamp;
+						// let filePath = `${wx.env.USER_DATA_PATH}/${FILE_BASE_NAME}.jpg`;
+						// fsm.writeFile({
+						//    filePath,
+						//    data: uni.arrayBufferToBase64(wxcodeRes.result.data),
+						//    encoding: 'base64',
+						//    success(res) {
+						// 	  uni.getImageInfo({
+						// 		 src:filePath,
+						// 		 success(res) {
+						// 			console.log('getImageInfo success',res)
+						// 			let image = canvas.createImage();
+						// 			image.onload = () =>{
+						// 				ctx.drawImage(image, 350-170, 750-170, 160, 160);
+						// 			}
+						// 			image.src = res.path;
+						// 			loadNextBook();
+						// 		 },
+						// 		 fail(err) {
+						// 			console.log(err);
+						// 		 }
+						// 	  })
+						//    },
+						//    fail() {
+						// 	  this.canvasFlag = true;
+						// 	  uni.showToast({
+						// 		 title: '小程序码生成失败',
+						// 		 duration: 2000,
+						// 		 icon: 'none'
+						// 	  });
+						//    },
+						// });
+						// 先存储
+						// wx.getFileSystemManager().writeFileSync(
+						// 	`${wx.env.USER_DATA_PATH}/mpcode.jpg`,
+						// 	uni.arrayBufferToBase64(wxcodeRes.result.data),
+						// 	'base64',
+						// );
+						// console.log('getImageInfo ${wx.env.USER_DATA_PATH}/mpcode.jpg',`${wx.env.USER_DATA_PATH}/mpcode.jpg`)
+						// uni.getImageInfo({
+						// 	src: `${wx.env.USER_DATA_PATH}/mpcode.jpg`,
+						// 	success: (res) => {
+						// 		console.log('getImageInfo res=>',res)
+						// 		let image = canvas.createImage();
+						// 		image.onload = () =>{
+						// 			ctx.drawImage(image, 350-170, 750-170, 160, 160);
+						// 		}
+						// 		image.src = res.path;
+						// 		loadNextBook();
+						// 	}
+						// })
+						//wxacode
+						const wxacodeRes = await cloudApi.call({
+							name:"getwxacode",
+							data:{
+								scene:"sid="+this.shelfInfo._id
+							}
+						});
+						// let url64 = "data:image/png;base64," + uni.arrayBufferToBase64(wxacodeRes.result.data);
+						// let hiddenImage = new Image();
+						// hiddenImage.onload=(res)=>{
+						//   ctx.drawImage(image, 350-170, 750-170,160,160);
+						//   loadNextBook();
+						// }
+						// hiddenImage.src=url64;
+						
+						
+						wx.getFileSystemManager().writeFileSync(
+							`${wx.env.USER_DATA_PATH}/mpcode.jpg`,
+							"data:image/png;base64,"+uni.arrayBufferToBase64(wxacodeRes.result.data),
+							"base64"
+						);
+						uni.getImageInfo({
+							src:`${wx.env.USER_DATA_PATH}/mpcode.jpg`,
+							success: (res) => {
+								var image=canvas.createImage();
+								image.onload=(res)=>{			
+								  ctx.drawImage(image, 350-170, 750-170,160,160);
+								  loadNextBook();
+								}
+								image.src=res.path;
+							}
+						})
+						
+						
 						
 					}
 				)

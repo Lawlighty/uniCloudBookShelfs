@@ -111,10 +111,10 @@ try {
       return __webpack_require__.e(/*! import() | uni_modules/uni-fab/components/uni-fab/uni-fab */ "uni_modules/uni-fab/components/uni-fab/uni-fab").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-fab/components/uni-fab/uni-fab.vue */ 171))
     },
     uPopup: function() {
-      return __webpack_require__.e(/*! import() | node-modules/uview-ui/components/u-popup/u-popup */ "node-modules/uview-ui/components/u-popup/u-popup").then(__webpack_require__.bind(null, /*! uview-ui/components/u-popup/u-popup.vue */ 241))
+      return __webpack_require__.e(/*! import() | node-modules/uview-ui/components/u-popup/u-popup */ "node-modules/uview-ui/components/u-popup/u-popup").then(__webpack_require__.bind(null, /*! uview-ui/components/u-popup/u-popup.vue */ 178))
     },
     uButton: function() {
-      return __webpack_require__.e(/*! import() | node-modules/uview-ui/components/u-button/u-button */ "node-modules/uview-ui/components/u-button/u-button").then(__webpack_require__.bind(null, /*! uview-ui/components/u-button/u-button.vue */ 234))
+      return __webpack_require__.e(/*! import() | node-modules/uview-ui/components/u-button/u-button */ "node-modules/uview-ui/components/u-button/u-button").then(__webpack_require__.bind(null, /*! uview-ui/components/u-button/u-button.vue */ 185))
     }
   }
 } catch (e) {
@@ -337,7 +337,7 @@ var _cloudApi = _interopRequireDefault(__webpack_require__(/*! ../../common/clou
       query.select('#myPoster').
       fields({ node: true, size: true }).
       exec( /*#__PURE__*/function () {var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(
-        function _callee(res) {var canvas, ctx, dpr, image, bookLength, bookIndex, loadNextBook;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+        function _callee(res) {var canvas, ctx, dpr, image, bookLength, bookIndex, loadNextBook, wxacodeRes;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
                   canvas = res[0].node;
                   ctx = canvas.getContext('2d');
 
@@ -369,28 +369,22 @@ var _cloudApi = _interopRequireDefault(__webpack_require__(/*! ../../common/clou
                   bookIndex = 0;
 
                   loadNextBook = function loadNextBook() {
-                    console.log('loadNextBook');
                     var bookItem = _this4.booksList[bookIndex];
-                    console.log('bookItem', bookItem);
                     uni.getImageInfo({
                       src: bookItem.cover_url,
                       success: function success(res) {
-                        console.log('getImageInfo', res);
                         var image = canvas.createImage();
 
                         image.onload = function () {
-                          console.log('image.onload');
                           var dx = Math.floor(bookIndex % 3) * (100 + 15) + 10;
                           var dy = Math.floor(bookIndex / 3) * (150 + 15) + 80;
 
                           ctx.drawImage(image, dx, dy, 100, 150);
 
                           if (bookIndex < bookLength - 1) {
-                            console.log('下一个');
                             bookIndex++;
                             loadNextBook();
                           } else {
-                            console.log('啊啊啊啊');
                             uni.canvasToTempFilePath({
                               canvas: canvas,
                               success: function success(res) {
@@ -408,8 +402,104 @@ var _cloudApi = _interopRequireDefault(__webpack_require__(/*! ../../common/clou
                       } });
 
                   };
+                  loadNextBook();return _context.abrupt("return");case 25:
 
-                  loadNextBook();case 22:case "end":return _context.stop();}}}, _callee);}));return function (_x) {return _ref.apply(this, arguments);};}());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  wxacodeRes = _context.sent;
+
+
+
+
+
+                  // let url64 = "data:image/png;base64," + uni.arrayBufferToBase64(wxacodeRes.result.data);
+                  // let hiddenImage = new Image();
+                  // hiddenImage.onload=(res)=>{
+                  //   ctx.drawImage(image, 350-170, 750-170,160,160);
+                  //   loadNextBook();
+                  // }
+                  // hiddenImage.src=url64;
+
+
+                  wx.getFileSystemManager().writeFileSync("".concat(
+                  wx.env.USER_DATA_PATH, "/mpcode.jpg"),
+                  "data:image/png;base64," + uni.arrayBufferToBase64(wxacodeRes.result.data),
+                  "base64");
+
+                  uni.getImageInfo({
+                    src: "".concat(wx.env.USER_DATA_PATH, "/mpcode.jpg"),
+                    success: function success(res) {
+                      var image = canvas.createImage();
+                      image.onload = function (res) {
+                        ctx.drawImage(image, 350 - 170, 750 - 170, 160, 160);
+                        loadNextBook();
+                      };
+                      image.src = res.path;
+                    } });case 28:case "end":return _context.stop();}}}, _callee);}));return function (_x) {return _ref.apply(this, arguments);};}());
+
+
+
 
 
 

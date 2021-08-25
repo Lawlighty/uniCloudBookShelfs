@@ -27,7 +27,7 @@
 		components:{
 			bookShelfItem
 		},
-		onLoad() {
+		async onLoad(options) {
 			// console.log('获取openID') 用户登录凭证
 			uni.login({
 				provider: "weixin",
@@ -47,6 +47,17 @@
 					cloudApi.call(option)
 				}
 			})
+			
+			// 通过小程序码进入
+			if(options.scene){
+				let scene = unescape(options.scene);
+				let params =  scene.split('=');
+				let key = params[0];
+				
+				uni.navigateTo({
+					url: '../book-shelf/book-shelf?id='+params[1],
+				})
+			}
 		},
 		onShow() {
 			console.log('this.userInfo',this.userInfo)
